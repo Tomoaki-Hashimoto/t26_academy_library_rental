@@ -38,6 +38,9 @@ public class AccountPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
+    if (this.account == null) {
+        return null;
+    }
         return this.account.getEmail();
     }
 
