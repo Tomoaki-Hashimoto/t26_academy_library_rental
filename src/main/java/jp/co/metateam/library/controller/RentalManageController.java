@@ -3,10 +3,12 @@ package jp.co.metateam.library.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.validation.Valid;
 import jp.co.metateam.library.model.RentalManageDto;
 import jp.co.metateam.library.service.AccountService;
 import jp.co.metateam.library.service.StockService;
@@ -77,7 +79,22 @@ public class RentalManageController {
     }
 
     @PostMapping("/rental/add")
-    public String add(@ModelAttribute RentalManageDto dto) {
+    public String add(
+            @Valid @ModelAttribute RentalManageDto dto,
+            BindingResult bindingResult,
+            Model model) {
+
+        // バリデーションをサービスに委譲
+        rentalService.validate(dto, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("rentalManageDto", dto);
+            model.addAttribute("title", "貸出登録");
+            model.addAttribute("accounts", accountService.findAll());
+            model.addAttribute("stockList", stockService.findAll());
+            model.addAttribute("rentalStatus", RentalStatus.values());
+            return "/rental/add";
+        }
 
         rentalService.save(dto);
 
