@@ -17,8 +17,8 @@ public interface RentalManageRepository extends JpaRepository<RentalManage, Long
     // 期間重複チェック用（ステータスが貸出待ち=0 か 貸出中=1 のもののみ対象）
     @Query("SELECT r FROM RentalManage r WHERE r.stockId = :stockId " +
             "AND (r.status = 0 OR r.status = 1) " +
-            "AND r.expectedRentalOn <= :expectedReturnOn " +
-            "AND r.expectedReturnOn >= :expectedRentalOn")
+            "AND r.expectedRentalOn < :expectedReturnOn " +
+            "AND r.expectedReturnOn > :expectedRentalOn")
     List<RentalManage> findOverlappingRentals(
             @Param("stockId") String stockId,
             @Param("expectedRentalOn") LocalDate expectedRentalOn,

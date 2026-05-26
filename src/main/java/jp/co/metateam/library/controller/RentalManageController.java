@@ -49,7 +49,7 @@ public class RentalManageController {
     public String index(Model model) {
         // 貸出管理テーブルから全件取得
         // 貸出一覧画面に渡すデータをmodelに追加
-        // 貸出一覧画面に遷移
+        // 貸出一覧画面へ遷移
         return "/rental/index";
     }
 

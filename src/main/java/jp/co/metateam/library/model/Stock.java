@@ -41,7 +41,6 @@ public class Stock {
     @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
     private BookMst bookMst;
 
-
     /** Getters */
 
     public String getId() {
@@ -63,7 +62,6 @@ public class Stock {
     public BookMst getBookMst() {
         return bookMst;
     }
-
 
     /** Setters */
 

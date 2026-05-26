@@ -47,13 +47,11 @@ public class RentalManageService {
     public void validate(RentalManageDto dto, BindingResult bindingResult) {
         LocalDate today = LocalDate.now();
 
-        // ステータスチェック（返却済み・キャンセル不可）
         if (dto.getStatus() != null && (dto.getStatus() == 2 || dto.getStatus() == 3)) {
             bindingResult.rejectValue("status", "error.status",
                     "貸出ステータスは「貸出待ち」もしくは「貸出中」を選択してください");
         }
 
-        // 日付・ステータス妥当性チェック
         if (dto.getExpectedRentalOn() != null && dto.getExpectedReturnOn() != null && dto.getStatus() != null) {
 
             if (dto.getExpectedRentalOn().isAfter(dto.getExpectedReturnOn())) {
@@ -72,16 +70,13 @@ public class RentalManageService {
             }
         }
 
-        // DB関連チェック（上記でエラーがない場合のみ）
         if (!bindingResult.hasErrors() && dto.getStockId() != null) {
 
-            // 在庫ステータスチェック
             if (!isStockAvailable(dto.getStockId())) {
                 bindingResult.rejectValue("stockId", "error.stockId",
                         "選択した在庫は現在貸出できない状態です");
             }
 
-            // 日付重複チェック
             if (dto.getExpectedRentalOn() != null && dto.getExpectedReturnOn() != null) {
                 if (isOverlapping(dto)) {
                     bindingResult.rejectValue("expectedRentalOn", "error.date",
@@ -91,19 +86,24 @@ public class RentalManageService {
         }
     }
 
-    // 在庫が貸出可能か確認（在庫ステータス0=貸出可）
     private boolean isStockAvailable(String stockId) {
-        return stockRepository.findById(Long.parseLong(stockId))
+        return stockRepository.findById(stockId)
                 .map(stock -> stock.getStatus() == 0)
                 .orElse(false);
     }
 
-    // 貸出期間の重複確認
     private boolean isOverlapping(RentalManageDto dto) {
-        List<RentalManage> overlapping = rentalRepository.findOverlappingRentals(
+        List<RentalManage> list = rentalRepository.findOverlappingRentals(
                 dto.getStockId(),
                 dto.getExpectedRentalOn(),
                 dto.getExpectedReturnOn());
-        return !overlapping.isEmpty();
+
+        for (RentalManage existing : list) {
+            if (existing.getExpectedRentalOn().isBefore(dto.getExpectedReturnOn()) &&
+                    existing.getExpectedReturnOn().isAfter(dto.getExpectedRentalOn())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
