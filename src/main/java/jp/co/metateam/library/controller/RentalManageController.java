@@ -23,6 +23,7 @@ public class RentalManageController {
 
     /**
      * 貸出一覧画面初期表示
+     * 
      * @param model
      * @return
      */
@@ -30,17 +31,16 @@ public class RentalManageController {
     private final StockService stockService;
     private final AccountService accountService;
     private final RentalManageService rentalService;
-    
+
     @Autowired
     public RentalManageController(
-        AccountService accountService,
-        StockService stockService,
-        RentalManageService rentalService
-    ) {
+            AccountService accountService,
+            StockService stockService,
+            RentalManageService rentalService) {
 
-    this.accountService = accountService;
-    this.stockService = stockService;
-    this.rentalService = rentalService;
+        this.accountService = accountService;
+        this.stockService = stockService;
+        this.rentalService = rentalService;
     }
 
     @GetMapping("/rental/index")
@@ -50,6 +50,7 @@ public class RentalManageController {
         // 貸出一覧画面に遷移
         return "/rental/index";
     }
+
     /**
      * 貸出登録画面初期表示
      */
@@ -61,8 +62,8 @@ public class RentalManageController {
 
         // タイトル
         model.addAttribute("title", "貸出登録");
-            
-         // アカウント一覧取得（プルダウン用）
+
+        // アカウント一覧取得（プルダウン用）
         model.addAttribute("accounts", accountService.findAll());
 
         // 在庫一覧取得（プルダウン用）
@@ -76,7 +77,7 @@ public class RentalManageController {
     }
 
     @PostMapping("/rental/add")
-        public String add(@ModelAttribute RentalManageDto dto) {
+    public String add(@ModelAttribute RentalManageDto dto) {
 
         rentalService.save(dto);
 

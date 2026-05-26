@@ -10,6 +10,7 @@ import jp.co.metateam.library.model.RentalManageDto;
 import jp.co.metateam.library.model.RentalManage;
 import jp.co.metateam.library.repository.RentalManageRepository;
 import lombok.extern.log4j.Log4j2;
+
 @Log4j2
 @Service
 public class RentalManageService {
@@ -37,7 +38,6 @@ public class RentalManageService {
         LocalDateTime now = LocalDateTime.now();
         entity.setCreatedAt(now);
         entity.setUpdatedAt(now);
-
 
         this.rentalRepository.save(entity);
 

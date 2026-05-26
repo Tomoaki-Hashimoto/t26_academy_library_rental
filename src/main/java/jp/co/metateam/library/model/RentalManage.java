@@ -57,13 +57,13 @@ public class RentalManage {
     public String getEmployeeId() {
         return employeeId;
     }
-    
+
     public LocalDate getExpectedRentalOn() {
-    return expectedRentalOn;
+        return expectedRentalOn;
     }
 
     public LocalDate getExpectedReturnOn() {
-    return expectedReturnOn;
+        return expectedReturnOn;
     }
 
     public String getStockId() {
@@ -73,6 +73,7 @@ public class RentalManage {
     public Integer getStatus() {
         return status;
     }
+
     public LocalDate getRentaledAt() {
         return rentaledAt;
     }
@@ -126,10 +127,10 @@ public class RentalManage {
     public void setCanceledAt(LocalDateTime canceledAt) {
         this.canceledAt = canceledAt;
     }
-    
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }  
+    }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
