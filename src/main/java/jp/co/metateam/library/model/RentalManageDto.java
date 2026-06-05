@@ -10,6 +10,9 @@ import jakarta.validation.constraints.Size;
 
 public class RentalManageDto {
 
+    /** 貸出管理番号 */
+    private Long id;
+
     /** 社員番号 */
     @NotBlank(message = "社員番号は必須です")
     @Size(max = 50)
@@ -35,6 +38,9 @@ public class RentalManageDto {
     private Integer status;
 
     /** Getters */
+    public Long getId() {
+        return id;
+    }
 
     public String getEmployeeId() {
         return employeeId;
@@ -57,6 +63,10 @@ public class RentalManageDto {
     }
 
     /** Setters */
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;

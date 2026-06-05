@@ -44,6 +44,10 @@ public class RentalManageService {
         this.rentalRepository.save(entity);
     }
 
+    public List<RentalManage> findAll() {
+        return rentalRepository.findAll();
+    }
+
     public void validate(RentalManageDto dto, BindingResult bindingResult) {
         LocalDate today = LocalDate.now();
 
@@ -105,5 +109,30 @@ public class RentalManageService {
             }
         }
         return false;
+    }
+
+    public RentalManage findById(Long id) {
+        return rentalRepository.findById(id).orElseThrow();
+    }
+
+    @Transactional
+    public void update(Long id, RentalManageDto dto) throws Exception {
+        try {
+            RentalManage entity = rentalRepository.findById(id).orElse(null);
+            if (entity == null) {
+                throw new Exception("RentalManage record not found.");
+            }
+
+            entity.setEmployeeId(dto.getEmployeeId());
+            entity.setExpectedRentalOn(dto.getExpectedRentalOn());
+            entity.setExpectedReturnOn(dto.getExpectedReturnOn());
+            entity.setStockId(dto.getStockId());
+            entity.setStatus(dto.getStatus());
+            entity.setUpdatedAt(LocalDateTime.now());
+
+            rentalRepository.save(entity);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

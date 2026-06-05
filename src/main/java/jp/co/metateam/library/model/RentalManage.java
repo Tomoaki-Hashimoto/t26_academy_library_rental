@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
@@ -52,7 +54,20 @@ public class RentalManage {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    // stockのリレーションを追加
+    @ManyToOne
+    @JoinColumn(name = "stock_id", insertable = false, updatable = false)
+    private Stock stock;
+
+    // accountのリレーションを追加
+    @ManyToOne
+    @JoinColumn(name = "employee_id", insertable = false, updatable = false)
+    private Account account;
+
     /** Getters */
+    public Long getId() {
+        return id;
+    }
 
     public String getEmployeeId() {
         return employeeId;
@@ -92,6 +107,14 @@ public class RentalManage {
 
     public LocalDateTime GetUpdatedAt() {
         return updatedAt;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     /** Setters */
